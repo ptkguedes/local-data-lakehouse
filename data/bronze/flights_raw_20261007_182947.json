@@ -1,0 +1,47 @@
+[
+  {
+    "flight_id": "LA8001",
+    "origin": "GIG",
+    "destination": "GRU",
+    "status": "SCHEDULED",
+    "passengers": "180",
+    "timestamp": "2026-10-07 10:00:00",
+    "_ingested_at": "2026-10-07 18:29:47"
+  },
+  {
+    "flight_id": "G31520",
+    "origin": "GIG",
+    "destination": "BSB",
+    "status": "DELAYED",
+    "passengers": "142",
+    "timestamp": "2026-10-07 10:15:00",
+    "_ingested_at": "2026-10-07 18:29:47"
+  },
+  {
+    "flight_id": "AD4090",
+    "origin": "SDU",
+    "destination": "VCP",
+    "status": "BOARDING",
+    "passengers": "110",
+    "timestamp": "2026-10-07 10:30:00",
+    "_ingested_at": "2026-10-07 18:29:47"
+  },
+  {
+    "flight_id": "LA8001",
+    "origin": "GIG",
+    "destination": "GRU",
+    "status": "SCHEDULED",
+    "passengers": "180",
+    "timestamp": "2026-10-07 10:00:00",
+    "_ingested_at": "2026-10-07 18:29:47"
+  },
+  {
+    "flight_id": "UNKNOWN",
+    "origin": "GIG",
+    "destination": null,
+    "status": "CANCELLED",
+    "passengers": "0",
+    "timestamp": "2026-10-07 11:00:00",
+    "_ingested_at": "2026-10-07 18:29:47"
+  }
+]
