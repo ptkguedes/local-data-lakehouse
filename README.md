@@ -19,7 +19,7 @@ The ingest step does not call an external API. It generates a fixed sample paylo
 - Pandas `3.0.6` (used when the scripts preview results with `.df()`)
 - JSON for the durable bronze layer, Snappy-compressed Parquet for silver and gold
 
-There is no Docker setup, no environment variables, and no test suite in this repository.
+There is no Docker setup and no environment variables. Pytest covers the silver transform and the gold aggregation (`tests/test_medallion.py`). GitHub Actions runs those tests on push and on pull request.
 
 ## Data flow
 
@@ -79,7 +79,13 @@ python src/03_aggregate_gold.py
 
 Silver exits early with a message if `data/bronze` has no `flights_raw_*.json` files. Gold exits early if `data/silver/flights_cleaned.parquet` is missing.
 
-`run_pipeline.py` will use `venv/Scripts/python.exe` when that path exists (a typical Windows virtualenv). Otherwise it uses the same Python interpreter that launched the orchestrator. On macOS and Linux, run it from the activated environment (or call that environment's `python` explicitly) so the child scripts see DuckDB and Pandas.
+`run_pipeline.py` runs each step with the project virtualenv when it exists: `venv/bin/python` on macOS and Linux, and `venv/Scripts/python.exe` on Windows. If that interpreter is not there, it uses the interpreter that launched the orchestrator (`sys.executable`).
+
+Run the tests from the repository root after installing requirements:
+
+```bash
+pytest
+```
 
 Inspect the gold table with DuckDB:
 
@@ -100,5 +106,8 @@ python -c "import duckdb; print(duckdb.sql(\"SELECT * FROM 'data/gold/kpi_flight
 │   ├── 02_transform_silver.py  # Clean, type, and deduplicate
 │   ├── 03_aggregate_gold.py    # Origin/status KPIs
 │   └── run_pipeline.py         # Run the three steps in sequence
+├── tests/
+│   └── test_medallion.py       # Silver transform and gold aggregation
+├── .github/workflows/tests.yml # Pytest on push and pull request
 └── requirements.txt
 ```

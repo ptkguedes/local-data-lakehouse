@@ -7,9 +7,21 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = Path(__file__).resolve().parent
 
 def python_executable():
-    venv_python = PROJECT_ROOT / "venv" / "Scripts" / "python.exe"
-    if venv_python.exists():
-        return str(venv_python)
+    """Interpreter used to run each pipeline step.
+
+    Prefer the project virtualenv when it exists, using this platform's
+    layout: ``venv/bin/python`` on macOS and Linux, and
+    ``venv/Scripts/python.exe`` on Windows. The path is not resolved,
+    because the Unix venv entry point is a symlink and the environment
+    is applied only when that path is executed. If that interpreter is
+    absent, use the interpreter that launched this process.
+    """
+    if sys.platform == "win32":
+        candidate = PROJECT_ROOT / "venv" / "Scripts" / "python.exe"
+    else:
+        candidate = PROJECT_ROOT / "venv" / "bin" / "python"
+    if candidate.is_file():
+        return str(candidate)
     return sys.executable
 
 def run_step(script_name):

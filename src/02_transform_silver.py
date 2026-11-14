@@ -3,13 +3,14 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-def run_silver_transformation():
+def run_silver_transformation(project_root=None):
     print("🧹 [SILVER] Iniciando Processamento e Limpeza de Dados...")
-    
+
+    root = PROJECT_ROOT if project_root is None else Path(project_root)
     con = duckdb.connect()
     
     # 1. Localizar o arquivo JSON bruto mais recente na Bronze
-    bronze_dir = PROJECT_ROOT / "data" / "bronze"
+    bronze_dir = root / "data" / "bronze"
     bronze_files = sorted(bronze_dir.glob("flights_raw_*.json"))
     if not bronze_files:
         print("❌ Nenhum arquivo encontrado na Camada Bronze!")
@@ -52,7 +53,7 @@ def run_silver_transformation():
     """
     
     # 3. Persistir na Camada Silver
-    silver_dir = PROJECT_ROOT / "data" / "silver"
+    silver_dir = root / "data" / "silver"
     silver_dir.mkdir(parents=True, exist_ok=True)
     silver_output_path = (silver_dir / "flights_cleaned.parquet").as_posix()
     

@@ -3,11 +3,12 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-def run_gold_aggregation():
+def run_gold_aggregation(project_root=None):
     print("🏆 [GOLD] Iniciando Agregação de Negócio e Geração de KPIs...")
-    
+
+    root = PROJECT_ROOT if project_root is None else Path(project_root)
     con = duckdb.connect()
-    silver_path = PROJECT_ROOT / "data" / "silver" / "flights_cleaned.parquet"
+    silver_path = root / "data" / "silver" / "flights_cleaned.parquet"
     
     if not silver_path.exists():
         print("❌ Arquivo da Camada Silver não encontrado! Execute a Silver primeiro.")
@@ -30,7 +31,7 @@ def run_gold_aggregation():
     """
     
     # 2. Persistir na Camada Gold em formato Parquet de alta performance (evita DLLs externas bloqueadas)
-    gold_dir = PROJECT_ROOT / "data" / "gold"
+    gold_dir = root / "data" / "gold"
     gold_dir.mkdir(parents=True, exist_ok=True)
     gold_output_path = (gold_dir / "kpi_flights_summary.parquet").as_posix()
     
